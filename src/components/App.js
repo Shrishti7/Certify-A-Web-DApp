@@ -8,6 +8,7 @@ import Certificate from '../abis/Certificate.json';
 
 import Register from "./Register.js"
 import Navbar from "./Navbar.js"
+// import StudentLogin from "./StudentLogin"
 
 
 class App extends Component {
@@ -63,6 +64,7 @@ constructor(props) {
     contractR: null,
     contractC: null,
     show: false,
+    showLogin: false,
     loading: true,
     showRegister: false
   };
@@ -80,25 +82,18 @@ constructor(props) {
    }
  }
 
+
   render() {
     return (
       // await this.renderTasks()
       <div className="bod">
         <Navbar account={this.state.account}/>
-        <div className="container-fluid mt-5">
-          <div className="row" >
-            <main role="main" className="col-lg-12 d-flex text-center">
-              <div className="content mr-auto ml-auto">
-                <h1>Certify</h1>
+
                  { this.state.loading
-                  ? <div id="loader" className="text-center"><p className="text-center">Loading...</p></div>
-                  : <Register contractR = {this.state.contractR} show = {this.state.show} account = {this.state.account} registrations = {this.state.registrations} loading = {this.state.loading}/>
+                  ?  <div id="loader" className="text-center"><p className="text-center">Loading...</p></div>
+                  : <Register contractR = {this.state.contractR}  account = {this.state.account} registrations = {this.state.registrations} loading = {this.state.loading}/>
                    }
 
-              </div>
-            </main>
-          </div>
-        </div>
       </div>
     );
   }

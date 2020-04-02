@@ -1,17 +1,27 @@
 import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, InputGroup, FormControl, Form } from 'react-bootstrap';
-// import Toast from 'react-bootstrap';
-import SweetAlert from 'sweetalert-react';
 import Navbar from "./Navbar.js"
-import StudentLogin from "./StudentLogin";
+import './App.css';
+import StudentLogin from "./StudentLogin"
+import UniversityLogin from "./UniversityLogin"
+import CompanyLogin from "./CompanyLogin"
 
 // const Register = () => {
   class Register extends Component {
     constructor(props) {
       super(props);
        this.selectRef = React.createRef();
+       this.state = {
+         showLogin: false,
+         profile1: 0,
+         profile: "",
+         uid: "",
+         name: "",
+         email: ""
+       }
     }
+
 
 
     handleChange = (e) => {
@@ -36,7 +46,7 @@ import StudentLogin from "./StudentLogin";
         const user_email = registration[4]
         const user_wallet = registration[5]
 
-        if((user_uid==this.state.uid)||(user_email==this.state.email)||(user_wallet==this.props.account))
+        if((user_uid===this.state.uid)||(user_email===this.state.email)||(user_wallet===this.props.account))
         {
           j = j+1;
         }
@@ -50,8 +60,8 @@ import StudentLogin from "./StudentLogin";
            this.state.name,
            this.state.email
            ).send({from: account}, (err, txHash) => {
+            window.location.reload()
            console.log(txHash);
-           window.location.reload()
          })
 
       }
@@ -60,35 +70,61 @@ import StudentLogin from "./StudentLogin";
         }
     }
 
-
   loginAccount = async (e) => {
     e.preventDefault();
-    // this.setState({ loading: true})
-    // var p = 0
+    var p = 0
+    var k = 0
     const { account, contractR, show} = this.props;
-    // const registrationCount = await contractR.methods.registrationCount().call()
-    // for (var i = 1; i<= registrationCount; i++) {
-    //   const registration = await contractR.methods.students(i).call()
-    //   const user_wallet = registration[5]
+    const registrationCount = await contractR.methods.registrationCount().call()
+    for (var i = 1; i<= registrationCount; i++) {
+      const registration = await contractR.methods.students(i).call()
+      const user_profile = registration[1]
+      console.log(registration[1])
+      const user_wallet = registration[5]
 
-      // if((user_wallet==this.state.account))
-      // {
-      //   p = p+1
-      // }
-      // if (p==1) {
-      //   this.setState({ loading: false})
-      console.log({account})
-        return (
-            <Navbar account={this.props.account}/>
-        );
+      if((user_wallet===this.props.account))
+      {
+        p = p+1
+        k = i
+        console.log(k)
+        const por = registration[1]
+        console.log('Current Profile', this.setState({profile1: por}))
+        break;
       }
+    }
+    console.log('k: ', k)
+    if (p==1) {
+      const registration = await contractR.methods.students(k).call()
+      console.log({account})
+      const por = registration[1].toString()
+      console.log('por: ',por)
+      if(por === 'Student') {
+        this.setState({profile1: 1})
+        this.setState({showLogin: true})
+      }
+      else if(por === 'Company') {
+        this.setState({profile1: 2})
+        this.setState({showLogin: true})
+      }
+      else if(por === 'University'){
+        this.setState({profile1: 3})
+        this.setState({showLogin: true})
+      }
+      }
+  }
 
 
     render () {
+
+      if(this.state.showLogin == false) {
       return (
           <div id="content" >
+          <div className="container-fluid mt-5">
+            <div className="row" >
+              <main role="main" className="col-lg-12 d-flex text-center">
+                <div className="content mr-auto ml-auto">
                      <form >
-
+                      <h1 className="tc">Certify</h1>
                         <br/>
                          <select id="profile"
                          className="profile"
@@ -99,7 +135,7 @@ import StudentLogin from "./StudentLogin";
                               <option  value= "null" selected disabled hidden> Profile </option>
                               <option  value="Student" name="profile">Student</option>
                               <option  value="University" name="profile">University</option>
-                              <option  value="Organization" name="profile">Company</option>
+                              <option  value="Company" name="profile">Company</option>
                           </select>
                           <p> </p>
 
@@ -149,23 +185,40 @@ import StudentLogin from "./StudentLogin";
                           <center><Button variant="light" id="but" type="submit" className="mr-2" onClick={this.registerAccount.bind(this)}> Register </Button></center>
                         </form>
 
-                        <ul id="certList" className="list-unstyled">
-                          { this.props.registrations.map((registration, key) => {
-                            return (
-                                      <div className ="registrationTemplate" key={key}>
-                                        <label>
-                                          <span className ="content text-white">{registration.content}</span>
-                                        </label>
-                                      </div>
-                                  )
-                                })}
-                         </ul>
-
                         <p className="text-center"> Already registered? </p>
                         <center><Button variant="light" id="but" type="submit" className="mr-2" onClick = {this.loginAccount.bind(this)} >Login</Button></center> <br/><br/><br/><br/><br/>
+
+
+                        </div>
+                      </main>
+                    </div>
+                  </div>
           </div>
+
       );
-  }
+    }
+
+      else {
+        if(this.state.profile1 === 1){
+          return (
+            <div> <StudentLogin account = {this.state.account} contractR = {this.state.contractR} registrations = {this.state.registrations}/>
+            </div>
+          );
+        }
+        else if (this.state.profile1 === 2) {
+          return (
+            <div> <CompanyLogin account = {this.state.account} contractR = {this.state.contractR} registrations = {this.state.registrations}/>
+            </div>
+          );
+        }
+        else if (this.state.profile1 === 3) {
+          return (
+            <div> <UniversityLogin account = {this.state.account} contractR = {this.state.contractR} registrations = {this.state.registrations}/>
+            </div>
+          );
+        }
+      }
+    }
 }
 
 export default Register;

@@ -4,7 +4,7 @@ import { Button, InputGroup, FormControl, Form } from 'react-bootstrap';
 import Navbar from "./Navbar.js"
 import './Login.css';
 
-class StudentLogin extends Component {
+class CompanyLogin extends Component {
 
 
   render() {
@@ -12,12 +12,12 @@ class StudentLogin extends Component {
       <div>
           <div id="sidebar" className="">
           <div className="toggle-btn mx-auto" >
-                      <h3 className= "bg-dark tc">Student Profile</h3>
+                <h3 className= "bg-dark text-center ml-auto mr-auto">Company Profile</h3>
           </div>
           <ul>
           <p className="mt-5"> </p>
-          <a href = ""><li>My Profile</li></a>
-          <a href = ""><li>Send Certificate</li></a>
+          <a href = ""><li> Company Profile</li></a>
+          <a href = ""><li>View Certificate</li></a>
           </ul>
         </div>
 
@@ -31,4 +31,4 @@ class StudentLogin extends Component {
   }
 }
 
-export default StudentLogin;
+export default CompanyLogin;

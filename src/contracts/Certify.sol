@@ -5,8 +5,8 @@ contract Certify {
 
     struct Student{
       uint id;
-      string uid;
       string profile;
+      string uid;
       string name;
       string email;
       address wallet;
@@ -16,8 +16,8 @@ contract Certify {
 
     event register(
       uint id,
-      string uid,
       string profile,
+      string uid,
       string name,
       string email,
       address wallet

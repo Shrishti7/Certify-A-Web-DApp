@@ -16,7 +16,7 @@ class Navbar extends Component {
             </a>
             <ul className="navbar-nav px-3">
               <li>
-                  <small className="text-white">{this.props.account}</small>
+                  <small className="text-white">Your Account: {this.props.account}</small>
               </li>
             </ul>
           </nav> <p> </p>
