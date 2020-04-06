@@ -42,40 +42,58 @@ captureFile = (event) => {
 
 //Example: "QmPjnv3hEHX3qWP8BVNY1rWQaKsGAtDPDNGc5GfAxsxhtC"
 //URL: https://ipfs.infura.io/ipfs/QmPjnv3hEHX3qWP8BVNY1rWQaKsGAtDPDNGc5GfAxsxhtC
-onSubmit = (event) => {
+onSubmit = async (event) => {
   event.preventDefault()
   console.log("Submitting the form...")
   const { account, contractR, contractC, ...props} = this.props;
-  ipfs.add(this.state.buffer, (error, result) => {
-    console.log('Ipfs result: ', result)
-    const certHash = result[0].hash
-    this.setState({certHash})
-    console.log('CertHash: ', this.state.certHash)
-    console.log("New UID: ", this.state.nuid)
-    if(error) {
-      console.error(error)
+  this.setState({contractR})
+  this.setState({contractC})
+  this.setState({account})
+  var j = 0
+  const registrationCount = await contractR.methods.registrationCount().call()
+  for (var i = 1; i<= registrationCount; i++) {
+    const registration = await contractR.methods.students(i).call()
+    const user_profile = registration[1]
+    const user_uid = registration[2]
+
+    if((user_uid===this.state.nuid))
+    {
+      j = j+1;
+    }
+  }
+    if(j === 1){
+      ipfs.add(this.state.buffer, (error, result) => {
+        console.log('Ipfs result: ', result)
+        const certHash = result[0].hash
+        this.setState({certHash})
+        console.log('CertHash: ', this.state.certHash)
+        console.log("New UID: ", this.state.nuid)
+        if(error) {
+          console.error(error)
+          return
+        }
+        //Step 2: Store the file on blockchain
+          this.props.contractC.methods.Upload (
+          this.state.nuid,
+          certHash
+          ).send({from: this.props.account}, (err, txHash) => {
+          console.log(txHash);
+        })
+        {/* console.log('Contract C in UL:', {contractC})
+          const globalCertCount = await contractC.methods.globalCertCount().call()
+          console.log("Global Cert Count: ", globalCertCount.toNumber())
+          for (var j = 1; j<= globalCertCount; j++) {
+            const certificate = await contractC.methods.certificates(j).call()
+            this.setState({
+              certificates: [...this.state.certificates, certificate]
+            })
+          } console.log('Certificates: ', this.state.certificates) */}
+      })
+    }
+    else {
+      window.alert("Please enter a valid UID")
       return
     }
-    //Step 2: Store the file on blockchain
-    this.setState({contractR})
-    this.setState({contractC})
-    this.setState({account})
-      this.props.contractC.methods.Upload (
-      this.state.nuid,
-      certHash
-      ).send({from: this.props.account}, (err, txHash) => {
-      console.log(txHash);
-    })
-    {/* console.log('Contract C in UL:', {contractC})
-      const globalCertCount = await contractC.methods.globalCertCount().call()
-      console.log("Global Cert Count: ", globalCertCount.toNumber())
-      for (var j = 1; j<= globalCertCount; j++) {
-        const certificate = await contractC.methods.certificates(j).call()
-        this.setState({
-          certificates: [...this.state.certificates, certificate]
-        })
-      } console.log('Certificates: ', this.state.certificates) */}
-  })
 }
 
 

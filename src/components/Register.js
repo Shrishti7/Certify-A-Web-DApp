@@ -18,7 +18,7 @@ import CompanyLogin from "./CompanyLogin"
          profile: "",
          uid: "",
          name: "",
-         email: ""
+         email: "",
        }
     }
 
