@@ -1,27 +1,69 @@
-* {
-  margin: 0px;
-  padding: 0px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-  "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-  sans-serif;
+.back {
+  display: flex;
 }
 
-#sidebar {
+.sidebar {
   position: fixed;
-  width: 200px;
+  margin-top: auto;
+  width: 250px;
   height: 100%;
   background:#151719;
 }
 
 
-#sidebar ul li {
+.sidebar ul li {
   color: rgba(230,230,230,0.9);
   list-style: none;
   padding:  15px 10px;
   border-bottom: 1px solid rgba(100,100,100,0.3);
 }
+main {
+    margin-top: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0px 10px;
+    flex: 1;
+  }
+
+.form-control{
+  width: 350px;
+  margin-bottom: 20px;
+  text-align: center;
+margin-right: auto;
+  margin-left: auto;
+  }
+  ul {
+    margin-bottom: 0px;
+  }
 
 
+  form {
+        box-sizing:border-box;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        border-style: none;
+    }
+
+  .form-a{
+    width:350px;
+    margin-bottom: 10px;
+    text-align:center;
+    margin-right: auto;
+    border-radius: .5em;
+    box-sizing: border-box;
+  }
+
+.form-b {
+  width:350px;
+  margin-bottom: 10px;
+  text-align:center;
+  margin-right: auto;
+  border-radius: .5em;
+  box-sizing: border-box;
+}
+
+
+/*
 #sidebar .toggle-btn {
   position: absolute;
   left: 230px;
@@ -35,3 +77,4 @@
   background: #151719;
   margin: 3px 0px;
 }
+*/

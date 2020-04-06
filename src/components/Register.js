@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, InputGroup, FormControl, Form } from 'react-bootstrap';
-import Navbar from "./Navbar.js"
+// import Navbar from "./Navbar.js"
 import './App.css';
 import StudentLogin from "./StudentLogin"
 import UniversityLogin from "./UniversityLogin"
@@ -33,7 +33,7 @@ import CompanyLogin from "./CompanyLogin"
       e.preventDefault();
       this.setState({ loading: true})
 
-      const { account, contractR, show} = this.props;
+      const { account, contractR, contractC} = this.props;
       console.log(contractR);
       var j = 0
       const registrationCount = await contractR.methods.registrationCount().call()
@@ -74,7 +74,7 @@ import CompanyLogin from "./CompanyLogin"
     e.preventDefault();
     var p = 0
     var k = 0
-    const { account, contractR, show} = this.props;
+    const { account, contractR, contractC, uid} = this.props;
     const registrationCount = await contractR.methods.registrationCount().call()
     for (var i = 1; i<= registrationCount; i++) {
       const registration = await contractR.methods.students(i).call()
@@ -93,11 +93,21 @@ import CompanyLogin from "./CompanyLogin"
       }
     }
     console.log('k: ', k)
-    if (p==1) {
+    if (p===1) {
       const registration = await contractR.methods.students(k).call()
       console.log({account})
       const por = registration[1].toString()
       console.log('por: ',por)
+      this.setState({profile: registration[1]})
+      this.setState({uid: registration[2]})
+      this.setState({name: registration[3]})
+      this.setState({email: registration[4]})
+      this.setState({contractC})
+      this.setState({contractR})
+      this.setState({account})
+      console.log('Profile state', this.state.profile)
+      // console.log('Contract R currently', {contractR})
+      // console.log('Contract C currently', {contractC})
       if(por === 'Student') {
         this.setState({profile1: 1})
         this.setState({showLogin: true})
@@ -111,12 +121,21 @@ import CompanyLogin from "./CompanyLogin"
         this.setState({showLogin: true})
       }
       }
+      console.log('Contract C in UL:', {contractC})
+      const globalCertCount = contractC.methods.globalCertCount().call()
+      console.log("Global Cert Count: ", globalCertCount)
+      for (var j = 1; j<= globalCertCount; j++) {
+        const certificate = contractC.methods.certificates(j).call()
+        this.setState({
+          certificates: [...this.state.certificates, certificate]
+        })
+      } console.log('Certificates: ', this.state.certificates)
   }
 
 
     render () {
 
-      if(this.state.showLogin == false) {
+      if(this.state.showLogin === false) {
       return (
           <div id="content" >
           <div className="container-fluid mt-5">
@@ -185,6 +204,7 @@ import CompanyLogin from "./CompanyLogin"
                           <center><Button variant="light" id="but" type="submit" className="mr-2" onClick={this.registerAccount.bind(this)}> Register </Button></center>
                         </form>
 
+
                         <p className="text-center"> Already registered? </p>
                         <center><Button variant="light" id="but" type="submit" className="mr-2" onClick = {this.loginAccount.bind(this)} >Login</Button></center> <br/><br/><br/><br/><br/>
 
@@ -201,19 +221,20 @@ import CompanyLogin from "./CompanyLogin"
       else {
         if(this.state.profile1 === 1){
           return (
-            <div> <StudentLogin account = {this.state.account} contractR = {this.state.contractR} registrations = {this.state.registrations}/>
+            <div> <StudentLogin account = {this.state.account} update={this.props.update} contractC = {this.state.contractC} contractR = {this.state.contractR} registrations = {this.state.registrations}/>
             </div>
           );
         }
         else if (this.state.profile1 === 2) {
           return (
-            <div> <CompanyLogin account = {this.state.account} contractR = {this.state.contractR} registrations = {this.state.registrations}/>
+            <div> <CompanyLogin account = {this.state.account} update={this.props.update} contractC = {this.state.contractC} contractR = {this.state.contractR} registrations = {this.state.registrations}/>
             </div>
           );
         }
         else if (this.state.profile1 === 3) {
+          const props = { account: this.state.account, contractR: this.state.contractR , contractC: this.state.contractC, uid: this.state.uid}
           return (
-            <div> <UniversityLogin account = {this.state.account} contractR = {this.state.contractR} registrations = {this.state.registrations}/>
+            <div> <UniversityLogin account = {this.state.account} update={this.props.update} contractC = {this.state.contractC} contractR = {this.state.contractR} name = {this.state.name} email = {this.state.email} uid = {this.state.uid} {...props} />
             </div>
           );
         }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import paper from '../paper3.jpeg';
+// import paper from '../paper3.jpeg';
 import Web3 from 'web3';
 import './App.css';
 import Certify from '../abis/Certify.json';
@@ -8,6 +8,7 @@ import Certificate from '../abis/Certificate.json';
 
 import Register from "./Register.js"
 import Navbar from "./Navbar.js"
+// import UniversityLogin from "./UniversityLogin";
 // import StudentLogin from "./StudentLogin"
 
 
@@ -53,6 +54,17 @@ async loadBlockchainData() {
     const contractC = web3.eth.Contract(abi1, address1)
     this.setState({ contractC })
     console.log("Certificate: ", this.state.contractC)
+    const globalCertCount = await contractC.methods.globalCertCount().call()
+    console.log("Global Cert Count: ", globalCertCount.toNumber())
+    for (var j = 1; j<= globalCertCount; j++) {
+      const certificate = await contractC.methods.certificates(j).call()
+      this.setState({
+        certificates: [...this.state.certificates, certificate]
+      })
+    } console.log('Certificates: ', this.state.certificates)
+  }
+  else {
+    window.alert('Smart contractC not deployed to the detected network!')
   }
 }
 
@@ -62,6 +74,7 @@ constructor(props) {
     account: '',
     registrations: [],
     contractR: null,
+    certificates: [],
     contractC: null,
     show: false,
     showLogin: false,
@@ -88,10 +101,9 @@ constructor(props) {
       // await this.renderTasks()
       <div className="bod">
         <Navbar account={this.state.account}/>
-
                  { this.state.loading
                   ?  <div id="loader" className="text-center"><p className="text-center">Loading...</p></div>
-                  : <Register contractR = {this.state.contractR}  account = {this.state.account} registrations = {this.state.registrations} loading = {this.state.loading}/>
+                  : <Register contractR = {this.state.contractR} contractC = {this.state.contractC}  account = {this.state.account} registrations = {this.state.registrations} loading = {this.state.loading}/>
                    }
 
       </div>

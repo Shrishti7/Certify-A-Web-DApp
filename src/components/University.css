@@ -1,80 +1,19 @@
-
-  main {
-    margin-top: 60px;
-    margin-left: 160px;
-    padding: 0px 10px;
-  }
-
-  #content-profile {
-    display: block;
-    margin-right: auto;
-    margin-left: auto;
-    text-align: center;
-  }
-
-  #content-send {
-    display: block;
-    margin-right: auto;
-    margin-left: auto;
-    text-align: center;
-  }
-
-  /* #about {
-    display: block;
-    margin-right: auto;
-    margin-left: auto;
-    text-align: center;
-  } */
-
-  form {
-      box-sizing:border-box;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      border-style: none;
-  }
-
-.profile {
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  -o-appearance: none;
-  -ms-appearance: none;
-  appearance: none;
-
-  margin: 30px 0;
-  padding: 10px 50px 10px 10px;
-  background-color: white;
-  position: relative;
-  font-family: Arial;
-  border-radius: 1px;
-  width:300px;
-  height: 40px;
-
-  border-radius: .5em;
-  box-sizing: border-box;
-  text-align: center;
+*{
+  margin: 0px;
+  padding: 0px;
 }
 
-#but {
-  margin: 10px;
-  background-color: white;
-  position: relative;
-  font-family: Arial;
-  border-radius: 4px;
-  border-style: ridge;
-  width: 90px;
-}
-
-.form-control{
-  width: 350px;
-  margin-bottom: 10px;
-  text-align: center;
+#content-profile {
+  display: block;
   margin-right: auto;
   margin-left: auto;
-  }
+  text-align: center;
+    width: 100%;
+}
 
-  ul {
-    margin-bottom: 0px;
-  }
+#container-fluid {
+  width: 100%;
+}
 
 #sidebar {
   position: fixed;
@@ -96,45 +35,17 @@
     border-bottom: 1px solid rgba(100,100,100,0.3);
   }
 
-  /* #sidebar .toggle-btn {
-    position: absolute;
-    left:230px;
-    top: 20px;
-  } */
 
-/* #sidebar .toggle-btn span {
-  display: block;
-  width: 30px;
-  height: 5px;
-  background: #97f538;
-  margin: 5px 0px;
-} */
+  #sidebar .toggle-btn {
+   position: absolute;
+   left:230px;
+   top: 20px;
+ }
 
-.nav-link {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  display: block;
-  white-space: nowrap;
+#sidebar .toggle-btn span {
+ display: block;
+ width: 30px;
+ height: 5px;
+ background: #97f538;
+ margin: 5px 0px;
 }
-.nav-link .icon {
-  margin-right: 0.25rem;
-  font-size: 1.875rem;
-  vertical-align: middle;
-  height: 2rem;
-  width: 2rem;
-  color: aliceblue;
-
-}
-
-.nav-link .text {
-  font-size: 1rem;
-  color: aliceblue;
-}
-
-.form-a{
-    width:350px;
-    margin-bottom: 10px;
-    text-align:center;
-    margin-right: auto;
-  }

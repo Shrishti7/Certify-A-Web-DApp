@@ -23,6 +23,7 @@ contract Certify {
       address wallet
     );
 
+
     constructor() public {
       //Register("Shrishti","shrishtig797@gmail.com");
     }
