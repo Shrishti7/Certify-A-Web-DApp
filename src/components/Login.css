@@ -1,28 +1,43 @@
-.back {
+.back{
+  background-image: url(../blue1.jpg);
+  align-self: stretch;
+  background-repeat:no-repeat;
+  background-size: cover;
+  background-position:center;
+  height: 100%;
+  color: white;
+
   display: flex;
+  padding: 25px 0px;
+
 }
 
+
 .sidebar {
-  position: fixed;
-  margin-top: auto;
-  width: 250px;
+position:fixed;
+  width: 15%;
   height: 100%;
-  background:#151719;
+  background:#1B1B1B;
+  font-size: 20px;
+
 }
 
 
 .sidebar ul li {
   color: rgba(230,230,230,0.9);
   list-style: none;
-  padding:  15px 10px;
+  padding:  0px;
   border-bottom: 1px solid rgba(100,100,100,0.3);
 }
+
 main {
     margin-top: 0px;
     margin-left: auto;
     margin-right: auto;
     padding: 0px 10px;
     flex: 1;
+    height: 100%;
+    text-align: left;
   }
 
 .form-control{
@@ -37,44 +52,26 @@ margin-right: auto;
   }
 
 
-  form {
-        box-sizing:border-box;
-        border-radius: 10px;
-        margin-bottom: 10px;
-        border-style: none;
+    form {
+          box-sizing:border-box;
+          border-radius: 10px;
+          margin-bottom: 10px;
+          border-style: none;
+          font-size: 22px;
+          align-items: left;
+      }
+
+    .form-a{
+      width:350px;
+      margin-bottom: 10px;
+      text-align:center;
+      margin-right: auto;
+      border-radius: .5em;
+      text-align: left;
+    box-sizing: border-box;
+
     }
 
-  .form-a{
-    width:350px;
-    margin-bottom: 10px;
-    text-align:center;
-    margin-right: auto;
-    border-radius: .5em;
-    box-sizing: border-box;
-  }
-
-.form-b {
-  width:350px;
-  margin-bottom: 10px;
-  text-align:center;
-  margin-right: auto;
-  border-radius: .5em;
-  box-sizing: border-box;
-}
-
-
-/*
-#sidebar .toggle-btn {
-  position: absolute;
-  left: 230px;
-  top: 20px;
-}
-
-#sidebar .toggle-btn span {
-  display: block;
-  width: 30px;
-  height: 5px;
-  background: #151719;
-  margin: 3px 0px;
-}
-*/
+  .fa{
+  text-align: left;
+   }

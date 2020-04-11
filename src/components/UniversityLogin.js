@@ -11,14 +11,14 @@ class UniversityLogin extends Component {
 
 constructor(props){
   super(props);
- const {account, contractR, contractC, name, uid, email} = this.props;
+ const {account, contractR, name, uid, email} = this.props;
  this.state = {
    nuid: '',
    buffer: null,
-   certHash: ''
+   certHash: '',
+   certs: []
  };
  console.log('Contract R currently', {contractR})
- console.log('Contract C currently', {contractC})
 }
 
 handleChange = (e) => {
@@ -40,15 +40,16 @@ captureFile = (event) => {
     console.log('file captured...')
 }
 
+
 //Example: "QmPjnv3hEHX3qWP8BVNY1rWQaKsGAtDPDNGc5GfAxsxhtC"
 //URL: https://ipfs.infura.io/ipfs/QmPjnv3hEHX3qWP8BVNY1rWQaKsGAtDPDNGc5GfAxsxhtC
 onSubmit = async (event) => {
   event.preventDefault()
   console.log("Submitting the form...")
-  const { account, contractR, contractC, ...props} = this.props;
+  const { account, contractR, certificates, ...props} = this.props;
   this.setState({contractR})
-  this.setState({contractC})
   this.setState({account})
+  this.setState({certificates})
   var j = 0
   const registrationCount = await contractR.methods.registrationCount().call()
   for (var i = 1; i<= registrationCount; i++) {
@@ -56,13 +57,14 @@ onSubmit = async (event) => {
     const user_profile = registration[1]
     const user_uid = registration[2]
 
-    if((user_uid===this.state.nuid))
+    if((user_uid===this.state.nuid)&&(user_profile !== "University"))
     {
       j = j+1;
     }
   }
     if(j === 1){
-      ipfs.add(this.state.buffer, (error, result) => {
+
+        ipfs.add(this.state.buffer, (error, result) => {
         console.log('Ipfs result: ', result)
         const certHash = result[0].hash
         this.setState({certHash})
@@ -73,25 +75,17 @@ onSubmit = async (event) => {
           return
         }
         //Step 2: Store the file on blockchain
-          this.props.contractC.methods.Upload (
+          this.props.contractR.methods.Upload (
           this.state.nuid,
           certHash
           ).send({from: this.props.account}, (err, txHash) => {
           console.log(txHash);
         })
-        {/* console.log('Contract C in UL:', {contractC})
-          const globalCertCount = await contractC.methods.globalCertCount().call()
-          console.log("Global Cert Count: ", globalCertCount.toNumber())
-          for (var j = 1; j<= globalCertCount; j++) {
-            const certificate = await contractC.methods.certificates(j).call()
-            this.setState({
-              certificates: [...this.state.certificates, certificate]
-            })
-          } console.log('Certificates: ', this.state.certificates) */}
       })
+      this.setState({certificates})
     }
     else {
-      window.alert("Please enter a valid UID")
+      window.alert("Please enter a valid Student UID")
       return
     }
 }
@@ -100,20 +94,26 @@ onSubmit = async (event) => {
 render() {
 return (
   <div className = "back" >
-        <div className="sidebar mt-5">
+        <div className="sidebar">
           <ul>
-              <li><a className="nav-link px-3">
+              <li><a className="nav-link px-3" href = "#prof">
                   <i className="material-icons icon">
                     person
                   </i>
                   <span className="text">User Profile</span>
                 </a></li>
-              <li><a className="nav-link px-3">
+              <li><a className="nav-link px-3" href= "#upload-cert">
                   <i className="material-icons icon">
                     publish
                   </i>
                   <span className="text">Upload Certificate</span>
                 </a></li>
+                <li><a className="nav-link px-3" href= "#uploaded">
+                    <i className="material-icons icon">
+                      publish
+                    </i>
+                    <span className="text">Uploaded Certificate</span>
+                  </a></li>
               <li><a className="nav-link px-3">
                   <i className="material-icons icon">
                     exit_to_app
@@ -124,7 +124,7 @@ return (
       </div>
 
       <div className="container-fluid mt-5">
-          <div className="row">
+          <div className="row" id = "prof">
               <main role="main" className="col-lg-50 d-flex text-center">
 
                   <div className="content mr-auto ml-auto"><center>
@@ -132,15 +132,15 @@ return (
                       <div>
                             <form name="a">
                             <div>
-                                <h5> Name: </h5><label><h6>{this.props.name}</h6></label>
+                                Name: <label>{this.props.name}</label>
                             </div>
                             <br/>
                             <div>
-                              <h5> Email: </h5> <label><h6>{this.props.email}</h6></label>
+                              Email: <label>{this.props.email}</label>
                             </div>
                             <br/>
                             <div>
-                                <h5> UID: </h5><label><h6>{this.props.uid}</h6></label>
+                                UID: <label>{this.props.uid}</label>
                             </div>
                             </form>
                       </div>
@@ -150,7 +150,7 @@ return (
             </div>
 
 
-            <div className="row">
+            <div className="row" id="upload-cert">
               <main role="main" className="col-lg-100">
                   <div id="content"><center>
                       <h1><center>Upload Certificate</center></h1>
@@ -168,16 +168,40 @@ return (
                               <div>
                                   <center><button id="snd" type="submit" onClick = {this.onSubmit.bind(this)}>Upload Certificate</button></center> <br/>
                               </div>
-                              <div>
-                                  <img src = {`https://ipfs.infura.io/ipfs/${this.state.certHash}`}/> <br/>
-                              </div>
                           </form>
+
                       </div>
                       </center>
                   </div>
 
               </main>
           </div>
+
+          <div className="row" id="uploaded">
+            <main role="main" className="col-lg-100">
+                <div id="content"><center>
+                        <div>
+                        <h1><center>Uploaded Certificates</center></h1>
+                        <ul id="certList" className="list-unstyled">
+                         {this.props.certificates.map((certificate, key) => {
+                           return (
+                             <div className = "certTemplate" key = {key}>
+                             <label>
+                               <span className = "content"> Cert Count: {key+1}<br/> </span>
+                               <span className = "content"> UID: {certificate.uid}<br/> </span>
+                               <span className = "content"> Certificate Hash:{certificate.certHash}<br/> </span>
+                               <span className = "content"> Certificate: <img src = {`https://ipfs.infura.io/ipfs/${certificate.certHash} `}/><br/> </span>
+                                 <br/>
+                             </label>
+                             </div>
+                           )
+                         })}
+                        </ul>
+                      </div>
+                    </center>
+                  </div>
+                </main>
+            </div>
         </div>
       </div>
       );
