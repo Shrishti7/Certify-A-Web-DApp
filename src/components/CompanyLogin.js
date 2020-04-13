@@ -21,6 +21,10 @@ class CompanyLogin extends Component {
    console.log('companyCerts in Company: ', this.props.companyCerts);
  }
 
+ logout = async () => {
+   window.location.reload()
+ }
+
   render() {
     return (
             <div className="back">
@@ -42,7 +46,7 @@ class CompanyLogin extends Component {
                             <i className="material-icons icon">
                               exit_to_app
                             </i>
-                            <span className="text">Log Out</span>
+                            <span className="text" onClick = {this.logout.bind(this)}>Log Out</span>
                           </a></li>
                     </ul>
                 </div>

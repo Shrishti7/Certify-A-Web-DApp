@@ -12,6 +12,11 @@
 
 }
 
+.image {
+  height: 45%;
+  width: 45%;
+  object-fit: contain;
+}
 
 .sidebar {
 position:fixed;

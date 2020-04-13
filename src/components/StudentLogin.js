@@ -28,6 +28,10 @@ class StudentLogin extends Component {
    this.setState({ [e.target.name]: e.target.value });
  };
 
+ logout = async () => {
+   window.location.reload()
+ }
+
  sendCert = async (event) => {
    event.preventDefault()
    console.log("Sending Certificates...")
@@ -82,7 +86,7 @@ class StudentLogin extends Component {
                         <i className="material-icons icon">
                           exit_to_app
                         </i>
-                        <span className="text">Log Out</span>
+                        <span className="text" onClick = {this.logout.bind(this)}>Log Out</span>
                       </a></li>
                 </ul>
             </div>

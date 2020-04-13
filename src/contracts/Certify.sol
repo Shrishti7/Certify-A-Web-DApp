@@ -29,6 +29,7 @@ contract Certify {
       uint certCount;
       string uid;
       string certHash;
+      address uploader;
     }
 
     mapping(uint => certificate) public certificates;
@@ -36,7 +37,8 @@ contract Certify {
     event store(
       uint certCount,
       string uid,
-      string certHash
+      string certHash,
+      address uploader
     );
 
     struct company{
@@ -89,10 +91,10 @@ contract Certify {
           globalCertCount ++;
 
           //Create event
-          certificates[globalCertCount] = certificate(globalCertCount, _uid, _certHash);
+          certificates[globalCertCount] = certificate(globalCertCount, _uid, _certHash, msg.sender);
 
           //Trigger event
-          emit store(globalCertCount, _uid, _certHash);
+          emit store(globalCertCount, _uid, _certHash, msg.sender);
 
     }
 

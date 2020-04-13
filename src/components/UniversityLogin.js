@@ -40,6 +40,9 @@ captureFile = (event) => {
     console.log('file captured...')
 }
 
+logout = async () => {
+  window.location.reload()
+}
 
 //Example: "QmPjnv3hEHX3qWP8BVNY1rWQaKsGAtDPDNGc5GfAxsxhtC"
 //URL: https://ipfs.infura.io/ipfs/QmPjnv3hEHX3qWP8BVNY1rWQaKsGAtDPDNGc5GfAxsxhtC
@@ -118,7 +121,7 @@ return (
                   <i className="material-icons icon">
                     exit_to_app
                   </i>
-                  <span className="text">Log Out</span>
+                  <span className="text" onClick = {this.logout.bind(this)}>Log Out</span>
                 </a></li>
           </ul>
       </div>
@@ -133,14 +136,11 @@ return (
                             <form name="a">
                             <div>
                                 Name: <label>{this.props.name}</label>
-                            </div>
                             <br/>
-                            <div>
                               Email: <label>{this.props.email}</label>
-                            </div>
                             <br/>
-                            <div>
                                 UID: <label>{this.props.uid}</label>
+                            <br/>
                             </div>
                             </form>
                       </div>
@@ -184,17 +184,19 @@ return (
                         <h1><center>Uploaded Certificates</center></h1>
                         <ul id="certList" className="list-unstyled">
                          {this.props.certificates.map((certificate, key) => {
+                           if(this.props.account === certificate.uploader) {
                            return (
                              <div className = "certTemplate" key = {key}>
                              <label>
                                <span className = "content"> Cert Count: {key+1}<br/> </span>
                                <span className = "content"> UID: {certificate.uid}<br/> </span>
                                <span className = "content"> Certificate Hash:{certificate.certHash}<br/> </span>
-                               <span className = "content"> Certificate: <img src = {`https://ipfs.infura.io/ipfs/${certificate.certHash} `}/><br/> </span>
-                                 <br/>
+                               <span className = "content"> Certificate: <img className = "image" src = {`https://ipfs.infura.io/ipfs/${certificate.certHash} `}/><br/> </span>
+                               <br/>
                              </label>
                              </div>
                            )
+                         }
                          })}
                         </ul>
                       </div>
