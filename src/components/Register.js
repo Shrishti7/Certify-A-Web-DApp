@@ -6,6 +6,9 @@ import './Register.css';
 import StudentLogin from "./StudentLogin"
 import UniversityLogin from "./UniversityLogin"
 import CompanyLogin from "./CompanyLogin"
+// import SweetAlert from 'sweetalert-react';
+// import 'sweetalert/dist/sweetalert.css';
+import swal from 'sweetalert';
 
 // const Register = () => {
   class Register extends Component {
@@ -33,10 +36,11 @@ import CompanyLogin from "./CompanyLogin"
       e.preventDefault();
       this.setState({ loading: true})
 
-      const { account, contractR, showLogin} = this.props;
+      const { account, contractR, showLogin, registrations} = this.props;
       console.log(contractR);
       console.log('Showlogin in register.js', this.props.showLogin);
       var j = 0
+      var e = 0
       const registrationCount = await contractR.methods.registrationCount().call()
       for (var i = 1; i<= registrationCount; i++) {
         const registration = await contractR.methods.students(i).call()
@@ -50,6 +54,15 @@ import CompanyLogin from "./CompanyLogin"
         if((user_uid===this.state.uid)||(user_email===this.state.email)||(user_wallet===this.props.account))
         {
           j = j+1;
+          if(user_uid===this.state.uid){
+            e = 1;
+          }
+          else if(user_email===this.state.email) {
+            e = 2;
+          }
+          else if (user_wallet===this.props.account) {
+            e = 3;
+          }
         }
       }
 
@@ -61,13 +74,22 @@ import CompanyLogin from "./CompanyLogin"
            this.state.name,
            this.state.email
            ).send({from: account}, (err, txHash) => {
-            window.location.reload()
+           window.location.reload()
            console.log(txHash);
          })
-
       }
       else {
-          window.alert("UID/email/account already registered with another account!")
+        if(e === 1){
+            swal("Oops!", "UID already registered!", "error");
+        }
+        else if(e === 2) {
+            swal("Oops!", "Email already registered!", "error");
+        }
+        else if (e === 3) {
+            swal("Oops!", "Account already registered!", "error");
+        }
+
+          // window.alert("UID/email/account already registered with another account!")
         }
     }
 
@@ -75,7 +97,7 @@ import CompanyLogin from "./CompanyLogin"
     e.preventDefault();
     var p = 0
     var k = 0
-    const { account, contractR, uid, certificates, showLogin, companyCerts} = this.props;
+    const { account, contractR, uid, certificates, showLogin, companyCerts, registrations} = this.props;
     const registrationCount = await contractR.methods.registrationCount().call()
     for (var i = 1; i<= registrationCount; i++) {
       const registration = await contractR.methods.students(i).call()
@@ -106,6 +128,7 @@ import CompanyLogin from "./CompanyLogin"
       this.setState({contractR})
       this.setState({account})
       this.setState({certificates})
+      this.setState({registrations})
       this.setState({companyCerts})
       console.log('Company certs in Login', this.state.companyCerts);
       console.log('Profile state', this.state.profile)
@@ -125,6 +148,9 @@ import CompanyLogin from "./CompanyLogin"
         this.setState({showLogin: true})
       }
     }
+    else {
+        swal("Oops!", "Account isn't registered!", "info");
+    }
   }
 
 
@@ -137,9 +163,11 @@ import CompanyLogin from "./CompanyLogin"
             <div className="row" >
               <main role="main" className="col-lg-12 d-flex text-center">
                 <div className="content mr-auto ml-auto">
-                     <form >
+                     <form>
                       <h1 className="tc">Certify</h1>
+                      <div>
                         <br/>
+                        <h3>Register</h3>
                          <select id="profile"
                          className="profile"
                          name="profile"
@@ -154,7 +182,7 @@ import CompanyLogin from "./CompanyLogin"
                           <p> </p>
 
 
-                          <Form.Label>Unique Identification Number</Form.Label>
+                          {/* <Form.Label>Unique Identification Number</Form.Label> */}
                           <InputGroup className="mb-3">
                             <InputGroup.Prepend>
                               <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
@@ -164,11 +192,12 @@ import CompanyLogin from "./CompanyLogin"
                               aria-label="Username"
                               aria-describedby="basic-addon1"
                               type="text" name="uid"
+                              id = "uid"
                               onChange={this.handleChange.bind(this)}
                             />
                           </InputGroup>
 
-                          <Form.Label>Name</Form.Label>
+                        {/*   <Form.Label>Name</Form.Label>*/}
                           <InputGroup className="mb-3">
                             <InputGroup.Prepend>
                               <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
@@ -178,11 +207,12 @@ import CompanyLogin from "./CompanyLogin"
                               aria-label="Username"
                               aria-describedby="basic-addon1"
                               type="text" name="name"
+                              id = "name"
                               onChange={this.handleChange.bind(this)}
                             />
                           </InputGroup>
 
-                          <Form.Label>Email</Form.Label>
+                        {/*   <Form.Label>Email</Form.Label> */}
                           <InputGroup className="mb-3">
                             <InputGroup.Prepend>
                               <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
@@ -191,19 +221,19 @@ import CompanyLogin from "./CompanyLogin"
                               placeholder="Email"
                               aria-label="Username"
                               aria-describedby="basic-addon1"
-                              type="text" name="email"
+                              type="text" name="email" id="email"
                               onChange={this.handleChange.bind(this)}
                               />
                           </InputGroup>
 
                           <center><Button variant="light" id="but" type="submit" className="mr-2" onClick={this.registerAccount.bind(this)}> Register </Button></center>
+                          </div>
+                          <hr/>
                         </form>
 
-
+                        <h3>Login</h3>
                         <p className="text-center"> Already registered? </p>
                         <center><Button variant="light" id="but" type="submit" className="mr-2" onClick = {this.loginAccount.bind(this)} >Login</Button></center> <br/><br/><br/><br/><br/>
-
-
                         </div>
                       </main>
                     </div>
@@ -215,23 +245,25 @@ import CompanyLogin from "./CompanyLogin"
 
    else {
            if(this.state.profile1 === 1){
-             const props = { account: this.state.account, companyCerts:this.state.companyCerts, contractR: this.state.contractR , uid: this.state.uid, showLogin: this.state.showLogin, certificates: this.state.certificates}
+             const props = { account: this.state.account, companyCerts:this.state.companyCerts, contractR: this.state.contractR , registrations: this.state.registrations, profile: this.state.profile, uid: this.state.uid, showLogin: this.state.showLogin, certificates: this.state.certificates}
              return (
-               <div> <StudentLogin account = {this.state.account} companyCerts = {this.state.companyCerts} contractR = {this.state.contractR} name = {this.state.name} email = {this.state.email} uid = {this.state.uid} showLogin = {this.state.showLogin} {...props}/>
+               <div>
+               <StudentLogin account = {this.state.account} companyCerts = {this.state.companyCerts} contractR = {this.state.contractR} profile = {this.state.profile} name = {this.state.name} email = {this.state.email} uid = {this.state.uid} showLogin = {this.state.showLogin} {...props}/>
                </div>
              );
            }
            else if (this.state.profile1 === 2) {
-             const props = { account: this.state.account, contractR: this.state.contractR , companyCerts:this.state.companyCerts, uid: this.state.uid, showLogin: this.state.showLogin, certificates: this.state.certificates}
+             const props = { account: this.state.account, contractR: this.state.contractR , companyCerts:this.state.companyCerts,profile: this.state.profile, registrations: this.state.registrations, uid: this.state.uid, showLogin: this.state.showLogin, certificates: this.state.certificates}
              return (
-               <div> <CompanyLogin account = {this.state.account} companyCerts = {this.state.companyCerts} contractR = {this.state.contractR} name = {this.state.name} email = {this.state.email} uid = {this.state.uid} showLogin = {this.state.showLogin} {...props}/>
+               <div> <CompanyLogin account = {this.state.account} companyCerts = {this.state.companyCerts} contractR = {this.state.contractR} profile = {this.state.profile} name = {this.state.name} email = {this.state.email} uid = {this.state.uid} showLogin = {this.state.showLogin} {...props}/>
                </div>
              );
            }
            else if (this.state.profile1 === 3) {
-             const props = { account: this.state.account, companyCerts:this.state.companyCerts, contractR: this.state.contractR , uid: this.state.uid, showLogin: this.state.showLogin, certificates: this.state.certificates}
+             const props = { account: this.state.account, companyCerts:this.state.companyCerts, contractR: this.state.contractR , profile: this.state.profile, registrations: this.state.registrations, uid: this.state.uid, showLogin: this.state.showLogin, certificates: this.state.certificates}
              return (
-               <div> <UniversityLogin account = {this.state.account} companyCerts = {this.state.companyCerts} contractR = {this.state.contractR} name = {this.state.name} email = {this.state.email} uid = {this.state.uid} showLogin = {this.state.showLogin} {...props} />
+               <div>
+               <UniversityLogin account = {this.state.account} companyCerts = {this.state.companyCerts} contractR = {this.state.contractR} profile = {this.state.profile} name = {this.state.name} email = {this.state.email} uid = {this.state.uid} showLogin = {this.state.showLogin} {...props} />
                </div>
              );
            }

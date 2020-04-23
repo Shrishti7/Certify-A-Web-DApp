@@ -8,6 +8,7 @@ import Certify from '../abis/Certify.json';
 
 import Register from "./Register.js"
 import Navbar from "./Navbar.js"
+import swal from 'sweetalert';
 // import UniversityLogin from "./UniversityLogin";
 // import StudentLogin from "./StudentLogin"
 
@@ -44,8 +45,8 @@ async loadBlockchainData() {
       })
     } console.log(" Registrations: ", this.state.registrations)
     const globalCertCount = await contractR.methods.globalCertCount().call()
-    console.log("Global Cert Count: ", globalCertCount.toNumber())
-    for (var j = 1; j<= globalCertCount.toNumber(); j++) {
+    console.log("Global Cert Count: ", globalCertCount)
+    for (var j = 1; j<= globalCertCount; j++) {
       const certificate = await contractR.methods.certificates(j).call()
       this.setState({
         certificates: [...this.state.certificates, certificate]

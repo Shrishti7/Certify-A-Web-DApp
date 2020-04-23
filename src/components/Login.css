@@ -1,5 +1,5 @@
 .back{
-  background-image: url(../blue1.jpg);
+  background-image: url(../darkblue.jpg);
   align-self: stretch;
   background-repeat:no-repeat;
   background-size: cover;
@@ -13,28 +13,39 @@
 }
 
 .image {
-  height: 45%;
-  width: 45%;
-  object-fit: contain;
+  height: 100%;
+  width: 100%;
+  object-fit: fill;
 }
+
 
 .sidebar {
 position:fixed;
-  width: 15%;
+  width: 20%;
   height: 100%;
-  background:#1B1B1B;
+  background:	#0F0F0F;
   font-size: 20px;
-
+  font-color:white;
 }
 
 
 .sidebar ul li {
-  color: rgba(230,230,230,0.9);
+  color: white;
   list-style: none;
   padding:  0px;
   border-bottom: 1px solid rgba(100,100,100,0.3);
 }
 
+a{
+  color: white;
+}
+
+hr{
+  border: 0;
+  height: 12px;
+  box-shadow: inset 0 12px 12px -12px rgba(255, 255, 255);
+
+}
 main {
     margin-top: 0px;
     margin-left: auto;
@@ -45,11 +56,103 @@ main {
     text-align: left;
   }
 
+  main .maincontainer{
+    position: relative;
+    width: 250px;
+    height: 320px;
+  }
+
+  main .cert-template{
+    position: relative;
+    width: 540px;
+    height: 380px;
+  }
+
+  main .thecard{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: all 0.3s ease;
+  }
+
+  main .theCard{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: all 0.5s ease;
+  }
+
+main .thecard:hover{
+    transform: rotateY(180deg);
+  }
+
+  main .theCard:hover{
+      transform: rotateY(180deg);
+    }
+
+.overflow {
+  position: relative;
+  }
+
+  main .thefront {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    background: #ffc728;
+    color: #333;
+  }
+
+  main .theFront {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    background: #ffc728;
+    color: #333;
+  }
+
+  main .theback {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    background: #5fcf80;
+    color: #fff;
+    transform: rotateY(180deg);
+  }
+
+  main .theBack {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-top: 10px;
+    padding: 5px;
+    border: 4px solid black;
+    backface-visibility: hidden;
+    background: #146675;
+    color: #fff;
+    transform: rotateY(180deg);
+  }
+
+  main .theBack p{
+    text-align: inherit;
+    color: white;
+    vertical-align: middle;
+  }
+
+  main .certificates {
+    width: 800px;
+    box-sizing: border-box;
+  }
+
 .form-control{
   width: 350px;
   margin-bottom: 20px;
   text-align: center;
-margin-right: auto;
+  margin-right: auto;
   margin-left: auto;
   }
   ul {
