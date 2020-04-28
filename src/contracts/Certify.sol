@@ -28,8 +28,10 @@ contract Certify {
     struct certificate{
       uint certCount;
       string uid;
+      string certType;
       string certHash;
       address uploader;
+      string time;
     }
 
     mapping(uint => certificate) public certificates;
@@ -37,15 +39,21 @@ contract Certify {
     event store(
       uint certCount,
       string uid,
+      string certType,
       string certHash,
-      address uploader
+      address uploader,
+      string time
     );
 
     struct company{
       uint count;
       string suid;
       string cuid;
+      string certType;
       string compCertHash;
+      string uplName;
+      string uplProfile;
+      string time;
     }
 
     mapping(uint => company) public companyCert;
@@ -54,7 +62,11 @@ contract Certify {
       uint count,
       string suid,
       string cuid,
-      string compCertHash
+      string certType,
+      string compCertHash,
+      string uplName,
+      string uplProfile,
+      string time
     );
 
 
@@ -81,37 +93,42 @@ contract Certify {
     }
 
 
-    function Upload(string memory _uid, string memory _certHash) public {
+    function Upload(string memory _uid, string memory _certType, string memory _certHash, string memory _time) public {
 
           //Check if uid and certHash are empty
           require(bytes(_uid).length >0 );
+          require(bytes(_certType).length >0 );
           require(bytes(_certHash).length >0 );
 
           //Increase globalCertCount
           globalCertCount ++;
 
+          address uploader = msg.sender;
           //Create event
-          certificates[globalCertCount] = certificate(globalCertCount, _uid, _certHash, msg.sender);
+          certificates[globalCertCount] = certificate(globalCertCount, _uid, _certType, _certHash, uploader, _time);
 
           //Trigger event
-          emit store(globalCertCount, _uid, _certHash, msg.sender);
+          emit store(globalCertCount, _uid, _certType, _certHash, uploader, _time);
 
     }
 
-    function Send(string memory _cuid, string memory _suid, string memory _compCertHash) public {
+    function Send( string memory _suid, string memory _cuid, string memory _certType, string memory _compCertHash, string memory _uplName, string memory _uplProfile, string memory _time) public {
       //Check if uid and certHash are empty
       require(bytes(_cuid).length >0 );
       require(bytes(_suid).length >0 );
+      require(bytes(_certType).length >0 );
       require(bytes(_compCertHash).length >0 );
+      require(bytes(_uplName).length >0 );
+      require(bytes(_uplProfile).length >0 );
 
       //Increase globalCertCount
       companyCertCount ++;
 
       //Create event
-      companyCert[companyCertCount] = company(companyCertCount, _cuid, _suid, _compCertHash);
+      companyCert[companyCertCount] = company(companyCertCount, _suid, _cuid, _certType, _compCertHash, _uplName, _uplProfile, _time);
 
       //Trigger event
-      emit sendCert(companyCertCount, _cuid, _suid, _compCertHash);
+      emit sendCert(companyCertCount, _suid, _cuid, _certType, _compCertHash, _uplName, _uplProfile, _time);
     }
 
 }

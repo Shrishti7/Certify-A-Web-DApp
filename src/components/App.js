@@ -93,6 +93,7 @@ constructor(props) {
     certificates: [],
     contractC: null,
     show: false,
+    dateTime: '',
     showLogin: false,
     loading: true,
     showRegister: false,
@@ -114,14 +115,14 @@ constructor(props) {
 
 
   render() {
-    const props = { account: this.state.account, contractR: this.state.contractR , companyCerts:this.state.companyCerts,  uid: this.state.uid, showLogin: this.state.showLogin, certificates: this.state.certificates, registrations: this.state.registrations}
+    const props = { account: this.state.account, contractR: this.state.contractR , companyCerts:this.state.companyCerts, dateTime: this.state.dateTime, uid: this.state.uid, showLogin: this.state.showLogin, certificates: this.state.certificates, registrations: this.state.registrations}
     return (
       // await this.renderTasks()
       <div>
         <Navbar account={this.state.account}/>
                  { this.state.loading
                   ?  <div id="loader" className="text-center"><p className="text-center">Loading...</p></div>
-                  : <Register contractR = {this.state.contractR} account = {this.state.account} companyCerts = {this.state.companyCerts} registrations = {this.state.registrations} showLogin = {this.state.showLogin} loading = {this.state.loading} {...props} />
+                  : <Register contractR = {this.state.contractR} account = {this.state.account} companyCerts = {this.state.companyCerts} dateTime = {this.state.dateTime} registrations = {this.state.registrations} showLogin = {this.state.showLogin} loading = {this.state.loading} {...props} />
                    }
 
       </div>
