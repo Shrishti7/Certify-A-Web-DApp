@@ -366,7 +366,7 @@ return (
                                return (
                                    <div>
                                      <div className = "certificates" key = {key}>
-                                     {key+1}.Student {reg.name} (UID: {certificate.uid})  uploaded {certificate.certType} Certificate on {certificate.time} successfully!
+                                     {key+1}.Student {reg.name}'s (UID: {certificate.uid}) {certificate.certType} Certificate was uploaded on {certificate.time} successfully!
                                          <br/>
                                      </div>
                                   </div>

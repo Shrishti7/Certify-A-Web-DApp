@@ -156,7 +156,7 @@ class CompanyLogin extends Component {
                                                                   }
                                                               }}>Verify </button>   &nbsp;
                                                               <button type="button" class="btn btn-info" onClick={() => {
-                                                                  window.open(`https://ipfs.infura.io/ipfs/${companyCert.certHash}`)
+                                                                  window.open(`https://ipfs.infura.io/ipfs/${companyCert.compCertHash}`)
                                                               }}>View</button>
                                                             </div>
                                                           </div>
@@ -206,7 +206,7 @@ class CompanyLogin extends Component {
                                                                   }
                                                                 }}>Verify </button>   &nbsp;
                                                                 <button type="button" class="btn btn-info" onClick={() => {
-                                                                    window.open(`https://ipfs.infura.io/ipfs/${companyCert.certHash}`)
+                                                                    window.open(`https://ipfs.infura.io/ipfs/${companyCert.compCertHash}`)
                                                                 }}>View</button>
                                                               </div>
                                                             </div>
@@ -239,9 +239,11 @@ class CompanyLogin extends Component {
                                     <ul id="certList" className="list-unstyled">
                                      {this.props.companyCerts.map((companyCert, key) => {
                                        if(companyCert.cuid === this.props.uid) {
+                                        const { account, contractR, certificates, registrations, ...props} = this.props;
+                                         var reg = registrations.find((registration) => registration.uid === companyCert.suid)
                                          return (
                                            <div className = "certificates" key = {key}>
-                                           {key+1}.Student (UID: {companyCert.suid}) sent their {companyCert.certType} Certificate on {companyCert.time}!
+                                           {key+1}.Student, {reg.name} (UID: {companyCert.suid}) sent their {companyCert.certType} Certificate!
                                                <br/>
                                            </div>
                                          )

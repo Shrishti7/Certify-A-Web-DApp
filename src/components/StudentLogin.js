@@ -158,6 +158,10 @@ class StudentLogin extends Component {
                     })
                  }
               }
+              else {
+                swal("Oops!", "Please enter a valid Company UID", "info");
+                return
+              }
             }
 
           })
@@ -186,6 +190,10 @@ class StudentLogin extends Component {
                 })
              }
           }
+          else {
+            swal("Oops!", "Please enter a valid Company UID", "info");
+            return
+          }
         }
 
       })
@@ -213,6 +221,10 @@ class StudentLogin extends Component {
                   console.log('Company Cert Count', this.state.companyCerts);
                 })
              }
+          }
+          else {
+            swal("Oops!", "Please enter a valid Company UID", "info");
+            return
           }
 
       })
